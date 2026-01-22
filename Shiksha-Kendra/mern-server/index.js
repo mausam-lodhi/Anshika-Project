@@ -29,14 +29,12 @@ app.use("/", require("./routes/stories"));
 app.use("/", require("./routes/stats"));
 
 // Serve static files from client build
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static(path.join(__dirname, "../mern-client/dist")));
+app.use(express.static(path.join(__dirname, "../mern-client/dist")));
 
-	// Handle client-side routing - fallback to index.html for non-API routes
-	app.get("*", (req, res) => {
-		res.sendFile(path.join(__dirname, "../mern-client/dist", "index.html"));
-	});
-}
+// Handle client-side routing - fallback to index.html for non-API routes
+app.get("*", (req, res) => {
+	res.sendFile(path.join(__dirname, "../mern-client/dist", "index.html"));
+});
 
 // Server listening
 if (process.env.NODE_ENV !== "production") {
