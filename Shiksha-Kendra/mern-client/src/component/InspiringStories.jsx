@@ -8,7 +8,7 @@ const InspiringStories = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetch("http://localhost:5000/all-stories")
+        fetch("https://anshika-project-server.onrender.com/all-stories")
             .then(res => {
                 if (!res.ok) {
                     throw new Error(`Server error: ${res.status}`);
@@ -28,7 +28,7 @@ const InspiringStories = () => {
         const storyData = { name, story, date: new Date().toLocaleDateString() };
 
         try {
-            const res = await fetch("http://localhost:5000/add-story", {
+            const res = await fetch("https://anshika-project-server.onrender.com/add-story", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(storyData)
