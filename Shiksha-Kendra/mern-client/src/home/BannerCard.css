@@ -1,0 +1,43 @@
+.banner .swiper {
+    width: 240px;
+    height: 320px;
+}
+
+.banner .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff;
+    /* Added these to make sure images look good */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Use ../ to exit 'home' folder and enter 'assets' folder */
+.banner .swiper-slide:nth-child(1) {
+    background-image: url('../assets/book1.png');
+}
+
+.banner .swiper-slide:nth-child(2) {
+    background-image: url('../assets/book2.png');
+}
+
+.banner .swiper-slide:nth-child(3) {
+    background-image: url('../assets/book3.png');
+}
+
+.banner .swiper-slide:nth-child(4) {
+    background-image: url('../assets/book4.png');
+}
+
+.banner .swiper-slide:nth-child(5) {
+    background-image: url('../assets/book5.png');
+}
+
+  
+  
+  
