@@ -73,15 +73,27 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "Upload",
-				element: <Upload />,
+				element: (
+					<PrivateRoute>
+						<Upload />
+					</PrivateRoute>
+				),
 			},
 			{
 				path: "ManageBook",
-				element: <ManageBook />,
+				element: (
+					<PrivateRoute>
+						<ManageBook />
+					</PrivateRoute>
+				),
 			},
 			{
 				path: "EditBook/:id",
-				element: <EditBook />,
+				element: (
+					<PrivateRoute>
+						<EditBook />
+					</PrivateRoute>
+				),
 				loader: ({ params }) => fetch(`${API_BASE_URL}/book/${params.id}`),
 			},
 		],
