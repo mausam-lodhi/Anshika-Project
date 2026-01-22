@@ -9,10 +9,7 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(
 	cors({
-		origin: [
-			"https://shiksha-kendra-7gfe.vercel.app",
-			"http://localhost:5173",
-		],
+		origin: ["https://anshika-project-server.onrender.com", "http://localhost:5173"],
 		credentials: true,
 	})
 );
