@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Button, Label, TextInput, Textarea } from "flowbite-react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Upload = () => {
   const bookCategory = [
     "Presentation",
@@ -43,7 +45,7 @@ const Upload = () => {
       formData.append("bookDescription", form.bookDescription.value);
 
       // 🚀 Send to your Express Backend
-      const res = await fetch("http://localhost:5000/upload-books", {
+      const res = await fetch(`${API_BASE_URL}/upload-books`, {
         method: "POST",
         // IMPORTANT: No 'Content-Type' header here. The browser sets it for FormData.
         body: formData,

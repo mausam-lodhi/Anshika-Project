@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom'
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const ManageBook = () => {
     const [allBooks, setAllBooks] = useState([]);
     const [searchQuery, setSearchQuery] = useState(""); // 🔍 Search state
 
     // Fetch all books
     useEffect(() => {
-        fetch("http://localhost:5000/all-books")
+        fetch(`${API_BASE_URL}/all-books`)
             .then(res => res.json())
             .then(data => setAllBooks(data))
             .catch(err => console.error("Error fetching books:", err));
@@ -17,9 +19,9 @@ const ManageBook = () => {
     // 🛡️ Delete with Confirmation and instant UI update
     const handledelete = (id) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this resource?");
-    
+
     if (confirmDelete) {
-        fetch(`http://localhost:5000/book/${id}`, {
+        fetch(`${API_BASE_URL}/book/${id}`, {
             method: "DELETE",
         })
         .then(async (res) => {
@@ -40,7 +42,7 @@ const ManageBook = () => {
 }
 
     // 🔎 Filter books based on search query
-    const filteredBooks = allBooks.filter(book => 
+    const filteredBooks = allBooks.filter(book =>
         book.bookTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
         book.authorName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         book.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -50,13 +52,13 @@ const ManageBook = () => {
         <div className='px-4 my-12'>
             <div className="flex justify-between items-center mb-8 lg:w-[1180px]">
                 <h2 className='text-3xl font-bold'>Manage Your Resources</h2>
-                
+
                 {/* Search Bar Input */}
                 <div className="w-72">
-                    <TextInput 
-                        id="search" 
-                        type="text" 
-                        placeholder="Search by title, author, or category..." 
+                    <TextInput
+                        id="search"
+                        type="text"
+                        placeholder="Search by title, author, or category..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -74,7 +76,7 @@ const ManageBook = () => {
                             <TableHeadCell>Manage</TableHeadCell>
                         </TableRow>
                     </TableHead>
-                    
+
                     <TableBody className="divide-y">
                         {filteredBooks.length > 0 ? (
                             filteredBooks.map((book, index) => (
@@ -92,8 +94,8 @@ const ManageBook = () => {
                                         >
                                             Edit
                                         </Link>
-                                        <button 
-                                            onClick={() => handledelete(book._id)} 
+                                        <button
+                                            onClick={() => handledelete(book._id)}
                                             className="bg-red-600 px-4 py-1 font-semibold text-white rounded hover:bg-red-800 transition-all"
                                         >
                                             Delete

@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
-const url = `${API_BASE_URL}/all-stories`;
+export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const API = axios.create({
-    baseURL: API_URL,
+    baseURL: API_BASE_URL,
     withCredentials: true
 });
 
-export default API;;
+export default API;

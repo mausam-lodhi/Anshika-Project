@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useLoaderData } from "react-router";
 import { FaDownload, FaStar, FaHistory, FaPaperPlane, FaBookReader, FaChevronDown, FaChevronUp } from "react-icons/fa";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const SingleBook = () => {
     const { _id, bookTitle, imageURL, bookDescription, bookPDFURL, authorName } = useLoaderData();
     const [comments, setComments] = useState([]);
@@ -11,8 +13,8 @@ const SingleBook = () => {
     // --- NEW: FUNCTION TO INCREMENT DOWNLOAD COUNT ---
     const handleDownload = () => {
         // 1. Tell the backend to increment the resourceCount
-        fetch("http://localhost:5000/track-download", { 
-            method: "POST" 
+        fetch(`${API_BASE_URL}/track-download`, {
+            method: "POST"
         })
         .then(() => console.log("Download tracked successfully"))
         .catch(err => console.error("Error tracking download:", err));
@@ -24,7 +26,7 @@ const SingleBook = () => {
     const fetchComments = useCallback(async () => {
         if (!_id) return;
         try {
-            const res = await fetch(`http://localhost:5000/comments/${_id}`);
+            const res = await fetch(`${API_BASE_URL}/comments/${_id}`);
             if (res.ok) {
                 const data = await res.json();
                 setComments(Array.isArray(data) ? data : []);
@@ -46,7 +48,7 @@ const SingleBook = () => {
         };
 
         try {
-            const res = await fetch("http://localhost:5000/add-comment", {
+            const res = await fetch(`${API_BASE_URL}/add-comment`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(commentData)
@@ -66,15 +68,15 @@ const SingleBook = () => {
             </div>
 
             <div className="relative z-10 pt-20 pb-20 px-4 lg:px-24 max-w-7xl mx-auto">
-                
+
                 {/* 1. HORIZONTAL IMAGE BANNER */}
                 <div className="w-full mb-12">
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-[40px] blur opacity-20"></div>
-                        <img 
-                            src={imageURL} 
-                            alt={bookTitle} 
-                            className="relative rounded-[40px] shadow-2xl w-full h-[400px] lg:h-[550px] object-cover border border-white/10" 
+                        <img
+                            src={imageURL}
+                            alt={bookTitle}
+                            className="relative rounded-[40px] shadow-2xl w-full h-[400px] lg:h-[550px] object-cover border border-white/10"
                         />
                         <div className="absolute bottom-0 left-0 w-full p-8 lg:p-12 bg-gradient-to-t from-black/80 to-transparent rounded-b-[40px]">
                             <h1 className="text-4xl lg:text-6xl font-black leading-tight tracking-tighter mb-2">
@@ -94,10 +96,10 @@ const SingleBook = () => {
                         <p className="text-base lg:text-lg text-slate-300 leading-relaxed font-normal opacity-90">
                             {bookDescription}
                         </p>
-                        
+
                         <div className="flex flex-wrap gap-4 mt-10">
                             {/* --- MODIFIED: DOWNLOAD BUTTON NOW CALLS handleDownload --- */}
-                            <button 
+                            <button
                                 onClick={handleDownload}
                                 className="bg-white text-slate-900 px-8 py-4 rounded-xl font-bold text-sm hover:bg-blue-400 transition-all flex items-center gap-2"
                             >
@@ -116,7 +118,7 @@ const SingleBook = () => {
                     <div className="bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[32px]">
                         <h3 className="text-xl font-bold mb-6">Leave a Review</h3>
                         <form onSubmit={handleCommentSubmit} className="space-y-4">
-                            <textarea 
+                            <textarea
                                 className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 focus:border-blue-500 outline-none transition-all resize-none text-sm"
                                 rows="4"
                                 placeholder="Share your experience..."
@@ -150,7 +152,7 @@ const SingleBook = () => {
                             )}
 
                             {comments.length > 3 && (
-                                <button 
+                                <button
                                     onClick={() => setShowAllComments(!showAllComments)}
                                     className="w-full py-3 border border-dashed border-white/20 rounded-xl text-slate-400 hover:text-white transition-all flex items-center justify-center gap-2 font-bold text-xs"
                                 >

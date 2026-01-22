@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FavBookImg from '../assets/favoritebook.jpg'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const FavBook = () => {
     const [stats, setStats] = useState({ userCount: 0, resourceCount: 0 });
 
     useEffect(() => {
-        fetch("http://localhost:5000/site-stats")
+        fetch(`${API_BASE_URL}/site-stats`)
             .then(res => res.json())
             .then(data => setStats(data))
             .catch(err => console.error("Stats fetch error:", err));
@@ -22,9 +24,9 @@ const FavBook = () => {
                 <h2 className="text-5xl font-extrabold text-slate-900 leading-tight">
                     Find Your Favorite <span className="text-blue-700">Resources Here!</span>
                 </h2>
-                
+
                 <p className="text-lg text-slate-600 md:w-11/12 leading-relaxed">
-                    Explore a vast collection of academic materials contributed by students worldwide. 
+                    Explore a vast collection of academic materials contributed by students worldwide.
                     From handwritten notes to textbook PDFs, everything you need is just a click away.
                 </p>
 

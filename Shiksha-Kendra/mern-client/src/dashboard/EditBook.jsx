@@ -2,12 +2,14 @@ import { useLoaderData, useParams } from 'react-router'
 import React, { useState } from 'react'
 import { Button, Label, TextInput, Textarea } from "flowbite-react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const EditBook = () => {
     const { id } = useParams();
     const { bookTitle, authorName, imageURL, category, bookDescription, bookPDFURL } = useLoaderData();
 
     const bookCategory = ["Presentation", "textbook", "Digital Notes", "HandWritten Notes", "Books", "Report", "Project", "Previous year Paper"];
-    
+
     const [selectedBookCategory, setSelectedBookCategory] = useState(category || bookCategory[0]);
     const [pdfFile, setPdfFile] = useState(null); // State for new file
     const [loading, setLoading] = useState(false);
@@ -19,9 +21,9 @@ const EditBook = () => {
     const handleupdate = async (event) => {
         event.preventDefault();
         setLoading(true);
-        
+
         const form = event.target;
-        
+
         // 📦 Prepare FormData (matches Upload logic)
         const formData = new FormData();
         formData.append("bookTitle", form.bookTitle.value);
@@ -29,14 +31,14 @@ const EditBook = () => {
         formData.append("imageURL", form.imageURL.value);
         formData.append("category", selectedBookCategory);
         formData.append("bookDescription", form.bookDescription.value);
-        
+
         // Only append the file if a new one is selected
         if (pdfFile) {
             formData.append("bookFile", pdfFile);
         }
 
         try {
-            const res = await fetch(`http://localhost:5000/book/${id}`, {
+            const res = await fetch(`${API_BASE_URL}/book/${id}`, {
                 method: "PATCH",
                 // Note: Do NOT set Content-Type header when sending FormData
                 body: formData,
@@ -60,9 +62,9 @@ const EditBook = () => {
     return (
         <div className='px-4 my-12'>
             <h2 className='mb-8 text-3xl font-bold'>Update Resource: <span className="text-blue-600">{bookTitle}</span></h2>
-            
+
             <form onSubmit={handleupdate} className="flex lg:w-[1180px] flex-col gap-4">
-                
+
                 {/* Title + Author */}
                 <div className='flex gap-8'>
                     <div className='lg:w-1/2'>
@@ -91,7 +93,7 @@ const EditBook = () => {
                         <div className="mb-2 block">
                             <Label htmlFor="inputState" value='Resource Category' />
                         </div>
-                        <select id="inputState" name="category" className='w-full h-10 rounded-lg border-gray-300 border' 
+                        <select id="inputState" name="category" className='w-full h-10 rounded-lg border-gray-300 border'
                             value={selectedBookCategory} onChange={handlechangeSelectedValue}>
                             {bookCategory.map((option) => (
                                 <option key={option} value={option}>{option}</option>

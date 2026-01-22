@@ -19,6 +19,9 @@ import Login from "../component/Login.jsx"
 import PrivateRoute from "../Privateroute/PrivateRoute.jsx";
 import Logout from "../component/Logout.jsx";
 import InspiringStories from "../component/InspiringStories.jsx";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -35,7 +38,7 @@ const router = createBrowserRouter([
             path:'/Blog',
             element:<Blog/>
         },
-       
+
         {
             path:'/About',
             element:<About/>
@@ -52,9 +55,9 @@ element:<InspiringStories/>
         {
             path:'/book/:id',
             element:<SingleBook/>,
-            loader:({params})=> fetch(`http://localhost:5000/book/${params.id}`),
+            loader:({params})=> fetch(`${API_BASE_URL}/book/${params.id}`),
         }
-        
+
     ]
     },
    {
@@ -76,9 +79,9 @@ element:<InspiringStories/>
         {
             path:"/admin/dashboard/EditBook/:id",
             element:<EditBook/>,
-            loader:({params})=> fetch(`http://localhost:5000/book/${params.id}`),
+            loader:({params})=> fetch(`${API_BASE_URL}/book/${params.id}`),
         },
-      
+
     ]
    },
     {
@@ -93,6 +96,6 @@ element:<InspiringStories/>
         path:"Logout",
         element:<Logout/>
     },
-   
+
 ]);
 export default router;
