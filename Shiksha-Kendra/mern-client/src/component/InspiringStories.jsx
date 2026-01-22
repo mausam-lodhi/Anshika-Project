@@ -54,7 +54,7 @@ const InspiringStories = () => {
     return (
         <div className="min-h-screen bg-[#fcfcfd] pt-20 pb-20">
             {/* 1. HORIZONTAL DEFAULT IMAGE / HERO SECTION */}
-            <div className="relative w-full h-[300 md:h-[450] overflow-hidden mb-12">
+            <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden mb-12">
                 <img
                     src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop"
                     alt="Students studying"

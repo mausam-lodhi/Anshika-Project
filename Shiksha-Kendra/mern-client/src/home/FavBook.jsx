@@ -33,13 +33,13 @@ const FavBook = () => {
                 {/* STATS SECTION UPDATED */}
                 <div className="flex flex-col sm:flex-row justify-between gap-10 py-6 border-y border-slate-100">
                     <div>
-                        {/* This now displays the number of books uploaded */}
-                        <h3 className="text-4xl font-black text-slate-800">{stats.userCount}+</h3>
+                        {/* This displays the number of resources uploaded */}
+                        <h3 className="text-4xl font-black text-slate-800">{stats.resourceCount}+</h3>
                         <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest">Total Resources</p>
                     </div>
                     <div>
                         {/* This displays the total number of downloads */}
-                        <h3 className="text-4xl font-black text-slate-800">{stats.resourceCount}+</h3>
+                        <h3 className="text-4xl font-black text-slate-800">{stats.userCount}+</h3>
                         <p className="text-sm font-semibold text-blue-600 uppercase tracking-widest">Total Downloads</p>
                     </div>
                 </div>

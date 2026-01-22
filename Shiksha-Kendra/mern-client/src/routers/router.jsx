@@ -23,79 +23,80 @@ import InspiringStories from "../component/InspiringStories.jsx";
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element : <App/>,
-        children:[{
-            path:'/',
-            element: <Home/>
-        },
-        {
-            path:'/shop',
-            element:<Shop/>
-        },
-        {
-            path:'/Blog',
-            element:<Blog/>
-        },
+	{
+		path: "/",
+		element: <App />,
+		children: [
+			{
+				path: "/",
+				element: <Home />,
+			},
+			{
+				path: "/shop",
+				element: <Shop />,
+			},
+			{
+				path: "/Blog",
+				element: <Blog />,
+			},
 
-        {
-            path:'/About',
-            element:<About/>
-        },
-        {
-            path:'/Cart',
-            element:<Cart/>
-
-        },
-        {
-path:'/inspiring-stories',
-element:<InspiringStories/>
-        },
-        {
-            path:'/book/:id',
-            element:<SingleBook/>,
-            loader:({params})=> fetch(`${API_BASE_URL}/book/${params.id}`),
-        }
-
-    ]
-    },
-   {
-    path:"/admin/dashboard",
-    element:<DashboardLayout/>,
-    children:[
-        {
-            path:"/admin/dashboard",
-            element:<PrivateRoute><Dashboard/></PrivateRoute>
-        },
-        {
-            path:"/admin/dashboard/Upload",
-            element:<Upload/>
-        },
-        {
-            path:"/admin/dashboard/ManageBook",
-            element:<ManageBook/>
-        },
-        {
-            path:"/admin/dashboard/EditBook/:id",
-            element:<EditBook/>,
-            loader:({params})=> fetch(`${API_BASE_URL}/book/${params.id}`),
-        },
-
-    ]
-   },
-    {
-        path:"Sign-up",
-        element:<Signup/>
-    },
-    {
-        path:"login",
-        element:<Login/>
-    },
-    {
-        path:"Logout",
-        element:<Logout/>
-    },
-
+			{
+				path: "/About",
+				element: <About />,
+			},
+			{
+				path: "/Cart",
+				element: <Cart />,
+			},
+			{
+				path: "/inspiring-stories",
+				element: <InspiringStories />,
+			},
+			{
+				path: "/book/:id",
+				element: <SingleBook />,
+				loader: ({ params }) => fetch(`${API_BASE_URL}/book/${params.id}`),
+			},
+		],
+	},
+	{
+		path: "/admin/dashboard",
+		element: <DashboardLayout />,
+		children: [
+			{
+				index: true,
+				element: (
+					<PrivateRoute>
+						<Dashboard />
+					</PrivateRoute>
+				),
+			},
+			{
+				path: "Upload",
+				element: <Upload />,
+			},
+			{
+				path: "ManageBook",
+				element: <ManageBook />,
+			},
+			{
+				path: "EditBook/:id",
+				element: <EditBook />,
+				loader: ({ params }) => fetch(`${API_BASE_URL}/book/${params.id}`),
+			},
+		],
+	},
+	{
+		path: "Sign-up",
+		element: <Signup />,
+	},
+	{
+		path: "login",
+		element: <Login />,
+	},
+	{
+		path: "Logout",
+		element: <Logout />,
+	},
 ]);
 export default router;

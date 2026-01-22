@@ -36,7 +36,7 @@ const Navbar = () => {
 
     ]
     return (
-        <header className='w-full bg-transparent fixed top-0 left-0 right-0 transition-all ease-in duration-300 Z-100000'>
+        <header className='w-full bg-transparent fixed top-0 left-0 right-0 transition-all ease-in duration-300 z-[100]'>
             <nav className={`py-4 lg:px-20 ${isSticky ? "sticky top-0 left-0 right-0 bg-blue-300":" "}`}>
                 <div className='flex justify-between items-center text-base gap-8'>
                     {/*logo*/}
@@ -47,19 +47,19 @@ const Navbar = () => {
                     <ul className='md:flex space-x-12 hidden'>
                         {
                             navItems.map(({ link, path }) => <Link key={path} to={path}
-                                className='block text-base text-black uppercase cursor-point text-blue-700'>{link}
+                                className='block text-base uppercase cursor-pointer text-blue-700 hover:text-blue-900'>{link}
                             </Link>)
                         }
                     </ul>
 
                     {/*btn for lg device*/}
-                    <div className='space-x-12 hidden lg=flex item-center'>
-                        <button><FaBarsStaggered className='w-s hover:text-blue-700' /></button>
+                    <div className='space-x-12 hidden lg:flex items-center'>
+                        <button><FaBarsStaggered className='w-5 hover:text-blue-700' /></button>
 
                     </div>
 
                     {/*menu btn for mobile devices*/}
-                    <div className='md-hidden'>
+                    <div className='md:hidden'>
                         <button onClick={toggleMenu} className='text-black focus:outline-none'>
                             {
                                 isMenuOpen ? <FaXmark className='h-5 w-5 text-black' /> : <FaBarsStaggered className='h-5 w-5 text-black' />
@@ -72,7 +72,7 @@ const Navbar = () => {
 
 
                     {navItems.map(({ link, path }) => <Link key={path} to={path}
-                        className='block text-base text-white uppercase cursor-point'>{link}
+                        className='block text-base text-white uppercase cursor-pointer'>{link}
                     </Link>)
                     }
                 </div>

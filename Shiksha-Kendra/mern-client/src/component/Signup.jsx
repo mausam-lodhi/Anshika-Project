@@ -56,11 +56,11 @@ const Signup = () =>  {
 				<div className="divide-y divide-gray-200">
 					<form onSubmit={handleSignUp} className="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7">
 						<div className="relative">
-							<input  id="email" name="email" type="email" autoComplete="email" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Email address" />
+							<input  id="email" name="email" type="email" autoComplete="email" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600" placeholder="Email address" />
 
 						</div>
-						<div className ="relative">
-							<input  id="password" name="password" type="password" autoComplete="new-password" className="peer  h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600" placeholder="Password" />
+						<div className="relative">
+							<input  id="password" name="password" type="password" autoComplete="new-password" className="peer h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:border-rose-600" placeholder="Password" />
 
 						</div>
                         <p>
