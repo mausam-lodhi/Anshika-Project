@@ -31,8 +31,20 @@ app.get("/api/health", (req, res) => res.send("Shiksha Kendra Server Running"));
 
 // Serve static files from client build (CSS, JS, images, etc.)
 const staticPath = path.join(__dirname, "../mern-client/dist");
+const fs = require("fs");
+
+// Check if dist folder exists
+if (!fs.existsSync(staticPath)) {
+	console.warn(`⚠️  Warning: Static files directory not found at ${staticPath}`);
+	console.warn("Make sure to build the client before starting the server: cd ../mern-client && npm run build");
+} else {
+	console.log(`✅ Serving static files from: ${staticPath}`);
+}
+
+// Serve static files (CSS, JS, images, etc.) but not index.html
 app.use(express.static(staticPath, {
-	index: false // Don't serve index.html for directory requests
+	index: false, // Don't serve index.html for directory requests
+	fallthrough: true // Continue to next middleware if file not found
 }));
 
 // Handle client-side routing - fallback to index.html for all non-API routes
@@ -40,10 +52,24 @@ app.use(express.static(staticPath, {
 // API routes are already defined above, so they'll be matched first
 app.get("*", (req, res) => {
 	const indexPath = path.join(staticPath, "index.html");
+
+	// Check if index.html exists
+	if (!fs.existsSync(indexPath)) {
+		console.error(`❌ Error: index.html not found at ${indexPath}`);
+		return res.status(500).send(`
+			<h1>Application Error</h1>
+			<p>index.html not found. Please build the client application first.</p>
+			<p>Path: ${indexPath}</p>
+		`);
+	}
+
+	// Serve index.html for all non-API routes (SPA routing)
 	res.sendFile(indexPath, (err) => {
 		if (err) {
 			console.error("Error sending index.html:", err);
-			res.status(500).send("Error loading application");
+			if (!res.headersSent) {
+				res.status(500).send("Error loading application");
+			}
 		}
 	});
 });
