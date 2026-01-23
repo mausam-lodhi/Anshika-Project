@@ -19,6 +19,7 @@ import Login from "../component/Login.jsx"
 import PrivateRoute from "../Privateroute/PrivateRoute.jsx";
 import Logout from "../component/Logout.jsx";
 import InspiringStories from "../component/InspiringStories.jsx";
+import ErrorPage from "../component/ErrorPage.jsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <App />,
+		errorElement: <ErrorPage />,
 		children: [
 			{
 				path: "/",
@@ -62,6 +64,7 @@ const router = createBrowserRouter([
 	{
 		path: "/admin/dashboard",
 		element: <DashboardLayout />,
+		errorElement: <ErrorPage />,
 		children: [
 			{
 				index: true,
@@ -99,16 +102,23 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "Sign-up",
+		path: "/Sign-up",
 		element: <Signup />,
+		errorElement: <ErrorPage />,
 	},
 	{
-		path: "login",
+		path: "/login",
 		element: <Login />,
+		errorElement: <ErrorPage />,
 	},
 	{
-		path: "Logout",
+		path: "/Logout",
 		element: <Logout />,
+		errorElement: <ErrorPage />,
+	},
+	{
+		path: "*",
+		element: <ErrorPage />,
 	},
 ]);
 export default router;

@@ -30,14 +30,22 @@ app.use("/", require("./routes/stats"));
 app.get("/api/health", (req, res) => res.send("Shiksha Kendra Server Running"));
 
 // Serve static files from client build (CSS, JS, images, etc.)
-app.use(express.static(path.join(__dirname, "../mern-client/dist"), {
+const staticPath = path.join(__dirname, "../mern-client/dist");
+app.use(express.static(staticPath, {
 	index: false // Don't serve index.html for directory requests
 }));
 
 // Handle client-side routing - fallback to index.html for all non-API routes
 // This must be last to catch all routes that don't match API or static files
+// API routes are already defined above, so they'll be matched first
 app.get("*", (req, res) => {
-	res.sendFile(path.join(__dirname, "../mern-client/dist", "index.html"));
+	const indexPath = path.join(staticPath, "index.html");
+	res.sendFile(indexPath, (err) => {
+		if (err) {
+			console.error("Error sending index.html:", err);
+			res.status(500).send("Error loading application");
+		}
+	});
 });
 
 // Server listening
