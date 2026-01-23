@@ -32,12 +32,30 @@ app.get("/api/health", (req, res) => res.send("Shiksha Kendra Server Running"));
 // Serve static files from client build (CSS, JS, images, etc.)
 const fs = require("fs");
 
+// Log current working directory and __dirname for debugging
+console.log(`📁 Current working directory: ${process.cwd()}`);
+console.log(`📁 Server __dirname: ${__dirname}`);
+
 // Try multiple possible paths for dist folder (for different deployment scenarios)
 const possiblePaths = [
-	path.join(__dirname, "../mern-client/dist"), // Local development / relative path
+	path.join(__dirname, "../mern-client/dist"), // Local development / relative path (most common)
 	path.join(__dirname, "../../mern-client/dist"), // Alternative relative path
 	path.join(process.cwd(), "mern-client/dist"), // From project root
 	path.join(process.cwd(), "../mern-client/dist"), // Alternative from root
+	path.join(process.cwd(), "Shiksha-Kendra/mern-client/dist"), // Render with Shiksha-Kendra root
+	path.join(process.cwd(), "../Shiksha-Kendra/mern-client/dist"), // Alternative Render path
+	"/opt/render/project/src/Shiksha-Kendra/mern-client/dist", // Render absolute path
+	"/opt/render/project/src/mern-client/dist", // Render alternative absolute path
+];
+
+// Also try to find mern-client folder and check if dist exists
+const possibleClientPaths = [
+	path.join(__dirname, "../mern-client"),
+	path.join(__dirname, "../../mern-client"),
+	path.join(process.cwd(), "mern-client"),
+	path.join(process.cwd(), "../mern-client"),
+	path.join(process.cwd(), "Shiksha-Kendra/mern-client"),
+	"/opt/render/project/src/Shiksha-Kendra/mern-client",
 ];
 
 let staticPath = null;
@@ -52,10 +70,37 @@ for (const testPath of possiblePaths) {
 if (!staticPath) {
 	console.error("❌ ERROR: Static files directory not found!");
 	console.error("Tried paths:");
-	possiblePaths.forEach(p => console.error(`  - ${p}`));
-	console.error("\n⚠️  Make sure to build the client before starting the server:");
-	console.error("   Build command: cd mern-client && npm install && npm run build");
-	console.error("   Or set Render build command: cd Shiksha-Kendra/mern-client && npm install && npm run build");
+	possiblePaths.forEach(p => {
+		const exists = fs.existsSync(p);
+		console.error(`  - ${p} ${exists ? '✅ EXISTS' : '❌ NOT FOUND'}`);
+	});
+
+	// Check if mern-client folder exists
+	console.error("\n🔍 Checking for mern-client folder:");
+	let clientPathFound = false;
+	for (const clientPath of possibleClientPaths) {
+		if (fs.existsSync(clientPath)) {
+			console.error(`  ✅ Found mern-client at: ${clientPath}`);
+			const distPath = path.join(clientPath, "dist");
+			if (fs.existsSync(distPath)) {
+				console.error(`    ✅ dist folder exists but index.html missing`);
+			} else {
+				console.error(`    ❌ dist folder does NOT exist - BUILD REQUIRED`);
+			}
+			clientPathFound = true;
+		}
+	}
+
+	if (!clientPathFound) {
+		console.error("  ❌ mern-client folder not found in any expected location");
+	}
+
+	console.error("\n⚠️  SOLUTION: Set Render Build Command to:");
+	console.error("   cd Shiksha-Kendra/mern-client && npm install && npm run build");
+	console.error("   OR");
+	console.error("   cd mern-client && npm install && npm run build");
+	console.error("\n   Then set Start Command to:");
+	console.error("   cd Shiksha-Kendra/mern-server && npm install && npm start");
 }
 
 // Serve static files (CSS, JS, images, etc.) but not index.html

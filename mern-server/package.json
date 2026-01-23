@@ -4,9 +4,11 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"prestart": "npm run build-client",
 		"start": "node index.js",
 		"dev": "nodemon index.js",
 		"build": "cd ../mern-client && npm install && npm run build",
+		"build-client": "cd ../mern-client && npm install && npm run build || echo 'Client build failed, continuing...'",
 		"vercel-start": "node index.js"
 	},
 	"author": "",
