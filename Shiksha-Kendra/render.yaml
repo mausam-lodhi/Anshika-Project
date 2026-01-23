@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: anshika-project-server
+    env: node
+    buildCommand: cd Shiksha-Kendra/mern-client && npm install && npm run build
+    startCommand: cd Shiksha-Kendra/mern-server && npm install && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
