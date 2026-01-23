@@ -69,7 +69,12 @@ if (staticPath) {
 // Handle client-side routing - fallback to index.html for all non-API routes
 // This must be last to catch all routes that don't match API or static files
 // API routes are already defined above, so they'll be matched first
-app.get("*", (req, res) => {
+// Handle all HTTP methods for SPA routing
+app.all("*", (req, res) => {
+	// Only handle GET requests for SPA routing, let other methods pass through
+	if (req.method !== "GET") {
+		return res.status(404).json({ error: "Route not found" });
+	}
 	// If static path not found, show helpful error
 	if (!staticPath) {
 		return res.status(500).send(`
