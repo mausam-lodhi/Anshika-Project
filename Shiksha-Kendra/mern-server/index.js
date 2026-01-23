@@ -20,18 +20,22 @@ app.use(express.json());
 // Initialize database connection
 connectDB();
 
-// Routes
-app.get("/", (req, res) => res.send("Shiksha Kendra Server Running"));
-
+// API Routes - must be defined before static file serving
 app.use("/", require("./routes/books"));
 app.use("/", require("./routes/comments"));
 app.use("/", require("./routes/stories"));
 app.use("/", require("./routes/stats"));
 
-// Serve static files from client build
-app.use(express.static(path.join(__dirname, "../mern-client/dist")));
+// Health check endpoint (for server monitoring)
+app.get("/api/health", (req, res) => res.send("Shiksha Kendra Server Running"));
 
-// Handle client-side routing - fallback to index.html for non-API routes
+// Serve static files from client build (CSS, JS, images, etc.)
+app.use(express.static(path.join(__dirname, "../mern-client/dist"), {
+	index: false // Don't serve index.html for directory requests
+}));
+
+// Handle client-side routing - fallback to index.html for all non-API routes
+// This must be last to catch all routes that don't match API or static files
 app.get("*", (req, res) => {
 	res.sendFile(path.join(__dirname, "../mern-client/dist", "index.html"));
 });
