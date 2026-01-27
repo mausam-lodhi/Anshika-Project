@@ -22,18 +22,26 @@ const SingleBook = () => {
 			.then(() => console.log("Download tracked successfully"))
 			.catch((err) => console.error("Error tracking download:", err));
 
-		try {
-			const link = document.createElement("a");
-			link.href = bookPDFURL;
-			link.setAttribute("download", downloadName);
-			link.setAttribute("target", "_blank");
-			document.body.appendChild(link);
-			link.click();
-			link.remove();
-		} catch (err) {
-			console.error("Download fallback error:", err);
-			window.open(bookPDFURL, "_blank");
-		}
+		// Force Cloudinary/raw URLs to download with the right extension using fl_attachment
+		const buildDownloadUrl = () => {
+			if (!bookPDFURL) return null;
+			try {
+				const url = new URL(bookPDFURL);
+				// If the URL already has params, we append; this keeps signatures intact for non-Cloudinary URLs
+				if (!url.searchParams.has("fl_attachment")) {
+					url.searchParams.set("fl_attachment", downloadName);
+				}
+				return url.toString();
+			} catch (err) {
+				console.error("Invalid download URL, using raw:", err);
+				return bookPDFURL;
+			}
+		};
+
+		const finalUrl = buildDownloadUrl();
+
+		// Use window.open to avoid browsers ignoring download attr on cross-origin URLs
+		window.open(finalUrl || bookPDFURL, "_blank");
 	};
 
 	const fetchComments = useCallback(async () => {
