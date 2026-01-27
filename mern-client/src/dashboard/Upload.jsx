@@ -24,7 +24,14 @@ const Upload = () => {
     const form = event.target;
 
     if (!pdfFile) {
-      return alert("Please select a PDF or PPT file");
+		return alert("Please select a PDF, DOC, or PPT file");
+    }
+
+    const allowedExtensions = ["pdf", "doc", "docx", "ppt", "pptx"];
+    const fileExt = pdfFile.name.split(".").pop().toLowerCase();
+
+    if (!allowedExtensions.includes(fileExt)) {
+		return alert("Only PDF, DOC/DOCX, and PPT/PPTX files are allowed");
     }
 
     // 🔐 Client-side validation (Optional but recommended)
@@ -70,83 +77,82 @@ const Upload = () => {
   };
 
   return (
-    <div className="px-4 my-12">
-      <h2 className="mb-8 text-3xl font-bold">Upload Your Resource (to Local Server)</h2>
+		<div className='px-4 my-12'>
+			<h2 className='mb-8 text-3xl font-bold'>Upload Your Resource (to Local Server)</h2>
 
-      <form onSubmit={handleBookSubmit} className="flex lg:w-[1180px] flex-col gap-4">
-        {/* Title + Author */}
-        <div className="flex gap-8">
-          <div className="lg:w-1/2">
-            <div className="mb-2 block">
-              <Label htmlFor="bookTitle" value="Resource Title" />
-            </div>
-            <TextInput id="bookTitle" type="text" placeholder="Enter title" required />
-          </div>
+			<form onSubmit={handleBookSubmit} className='flex lg:w-[1180px] flex-col gap-4'>
+				{/* Title + Author */}
+				<div className='flex gap-8'>
+					<div className='lg:w-1/2'>
+						<div className='mb-2 block'>
+							<Label htmlFor='bookTitle' value='Resource Title' />
+						</div>
+						<TextInput id='bookTitle' type='text' placeholder='Enter title' required />
+					</div>
 
-          <div className="lg:w-1/2">
-            <div className="mb-2 block">
-              <Label htmlFor="authorName" value="Provider Name" />
-            </div>
-            <TextInput id="authorName" type="text" placeholder="Your name" required />
-          </div>
-        </div>
+					<div className='lg:w-1/2'>
+						<div className='mb-2 block'>
+							<Label htmlFor='authorName' value='Provider Name' />
+						</div>
+						<TextInput id='authorName' type='text' placeholder='Your name' required />
+					</div>
+				</div>
 
-        {/* Image + Category */}
-        <div className="flex gap-8">
-          <div className="lg:w-1/2">
-            <div className="mb-2 block">
-              <Label htmlFor="imageURL" value="Image URL" />
-            </div>
-            <TextInput id="imageURL" type="text" placeholder="Thumbnail image URL" required />
-          </div>
+				{/* Image + Category */}
+				<div className='flex gap-8'>
+					<div className='lg:w-1/2'>
+						<div className='mb-2 block'>
+							<Label htmlFor='imageURL' value='Image URL' />
+						</div>
+						<TextInput id='imageURL' type='text' placeholder='Thumbnail image URL' required />
+					</div>
 
-          <div className="lg:w-1/2">
-            <div className="mb-2 block">
-              <Label htmlFor="inputState" value="Category" />
-            </div>
-            <select
-              id="inputState"
-              name="categoryName"
-              className="w-full h-10 rounded-lg border-gray-300 border"
-              value={selectedBookCategory}
-              onChange={(e) => setSelectedBookCategory(e.target.value)}
-            >
-              {bookCategory.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+					<div className='lg:w-1/2'>
+						<div className='mb-2 block'>
+							<Label htmlFor='inputState' value='Category' />
+						</div>
+						<select
+							id='inputState'
+							name='categoryName'
+							className='w-full h-10 rounded-lg border-gray-300 border'
+							value={selectedBookCategory}
+							onChange={(e) => setSelectedBookCategory(e.target.value)}>
+							{bookCategory.map((option) => (
+								<option key={option} value={option}>
+									{option}
+								</option>
+							))}
+						</select>
+					</div>
+				</div>
 
-        {/* Description */}
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="bookDescription" value="Description" />
-          </div>
-          <Textarea id="bookDescription" placeholder="Write resource description..." rows={4} required />
-        </div>
+				{/* Description */}
+				<div>
+					<div className='mb-2 block'>
+						<Label htmlFor='bookDescription' value='Description' />
+					</div>
+					<Textarea id='bookDescription' placeholder='Write resource description...' rows={4} required />
+				</div>
 
-        {/* File Upload */}
-        <div className="bg-gray-50 p-4 border-2 border-dashed border-gray-300 rounded-lg">
-          <Label className="mb-2 block font-semibold">Upload File (PDF / PPT)</Label>
-          <input
-            type="file"
-            accept=".pdf,.ppt,.pptx"
-            required
-            onChange={(e) => setPdfFile(e.target.files[0])}
-            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none"
-          />
-          <p className="mt-1 text-xs text-gray-500">Max file size: 10MB</p>
-        </div>
+				{/* File Upload */}
+				<div className='bg-gray-50 p-4 border-2 border-dashed border-gray-300 rounded-lg'>
+					<Label className='mb-2 block font-semibold'>Upload File (PDF / DOC / PPT)</Label>
+					<input
+						type='file'
+						accept='.pdf,.doc,.docx,.ppt,.pptx'
+						required
+						onChange={(e) => setPdfFile(e.target.files[0])}
+						className='block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-white focus:outline-none'
+					/>
+					<p className='mt-1 text-xs text-gray-500'>Max file size: 10MB</p>
+				</div>
 
-        {/* Submit */}
-        <Button type="submit" disabled={loading} className="mt-5 bg-blue-700">
-          {loading ? "Uploading to Server..." : "Upload Resource"}
-        </Button>
-      </form>
-    </div>
+				{/* Submit */}
+				<Button type='submit' disabled={loading} className='mt-5 bg-blue-700'>
+					{loading ? "Uploading to Server..." : "Upload Resource"}
+				</Button>
+			</form>
+		</div>
   );
 };
 
