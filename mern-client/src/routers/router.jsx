@@ -14,6 +14,7 @@ import Dashboard from "../dashboard/Dashboard";
 import Upload from "../dashboard/Upload.jsx"
 import ManageBook from "../dashboard/ManageBook.jsx"
 import EditBook from "../dashboard/EditBook.jsx"
+import Users from "../dashboard/Users.jsx";
 import Signup from "../component/Signup.jsx"
 import Login from "../component/Login.jsx"
 import PrivateRoute from "../Privateroute/PrivateRoute.jsx";
@@ -82,6 +83,14 @@ const router = createBrowserRouter([
 				element: (
 					<PrivateRoute>
 						<Dashboard />
+					</PrivateRoute>
+				),
+			},
+			{
+				path: "users",
+				element: (
+					<PrivateRoute>
+						<Users />
 					</PrivateRoute>
 				),
 			},

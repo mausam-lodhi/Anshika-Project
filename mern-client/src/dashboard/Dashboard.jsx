@@ -32,7 +32,7 @@ const Dashboard = () => {
 		setError("");
 
 		try {
-			const [statsRes, booksRes] = await Promise.all([fetch(`${API_BASE_URL}/stats/site-stats`), fetch(`${API_BASE_URL}/all-books`)]);
+			const [statsRes, booksRes] = await Promise.all([fetch(`${API_BASE_URL}/site-stats`), fetch(`${API_BASE_URL}/all-books`)]);
 
 			if (!statsRes.ok) {
 				throw new Error("Could not load stats");
