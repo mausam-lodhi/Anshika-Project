@@ -1,6 +1,20 @@
 const { ObjectId } = require('mongodb');
 const { connectDB, getCollections } = require('../config/database');
 
+// Helper to build a Cloudinary attachment URL so the browser downloads with a proper filename/extension
+const buildAttachmentUrl = (fileUrl, filename) => {
+	try {
+		const url = new URL(fileUrl);
+		if (!url.searchParams.has('fl_attachment')) {
+			url.searchParams.set('fl_attachment', filename);
+		}
+		return url.toString();
+	} catch (err) {
+		console.error('Invalid file URL, falling back to raw URL:', err);
+		return fileUrl;
+	}
+};
+
 // Upload book
 const uploadBook = async (req, res) => {
 	try {
@@ -28,6 +42,36 @@ const uploadBook = async (req, res) => {
 	} catch (error) {
 		console.error("Upload error:", error);
 		res.status(500).json({ message: "Server error", error: error.message });
+	}
+};
+
+// Download book file with Content-Disposition via Cloudinary fl_attachment
+const downloadBookFile = async (req, res) => {
+	try {
+		await connectDB();
+		const { booksCollections } = getCollections();
+		const { id } = req.params;
+
+		if (!ObjectId.isValid(id)) {
+			return res.status(400).json({ message: 'Invalid book ID format' });
+		}
+
+		const book = await booksCollections.findOne({ _id: new ObjectId(id) });
+		if (!book || !book.bookPDFURL) {
+			return res.status(404).json({ message: 'File not found for this book' });
+		}
+
+		const inferredName = (() => {
+			const raw = (book.bookPDFURL || '').split('?')[0].split('/').pop();
+			if (raw && raw.includes('.')) return raw;
+			return `${book.bookTitle || 'resource'}.pdf`;
+		})();
+
+		const redirectUrl = buildAttachmentUrl(book.bookPDFURL, inferredName);
+		return res.redirect(302, redirectUrl);
+	} catch (error) {
+		console.error('Download error:', error);
+		return res.status(500).json({ message: 'Server error', error: error.message });
 	}
 };
 
@@ -122,5 +166,6 @@ module.exports = {
 	getAllBooks,
 	getBookById,
 	updateBook,
-	deleteBook
+	deleteBook,
+	downloadBookFile,
 };

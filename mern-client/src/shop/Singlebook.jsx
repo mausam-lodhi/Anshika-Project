@@ -10,38 +10,14 @@ const SingleBook = () => {
 	const [newComment, setNewComment] = useState("");
 	const [showAllComments, setShowAllComments] = useState(false);
 
-	// Ensures the file downloads with its extension instead of opening incorrectly
+	// Use server endpoint so Content-Disposition is set correctly
 	const handleDownload = () => {
-		const downloadName = (() => {
-			if (!bookPDFURL) return `${bookTitle || "resource"}.pdf`;
-			const sanitized = bookPDFURL.split("?")[0].split("/").pop();
-			return sanitized || `${bookTitle || "resource"}.pdf`;
-		})();
-
 		fetch(`${API_BASE_URL}/track-download`, { method: "POST" })
 			.then(() => console.log("Download tracked successfully"))
 			.catch((err) => console.error("Error tracking download:", err));
 
-		// Force Cloudinary/raw URLs to download with the right extension using fl_attachment
-		const buildDownloadUrl = () => {
-			if (!bookPDFURL) return null;
-			try {
-				const url = new URL(bookPDFURL);
-				// If the URL already has params, we append; this keeps signatures intact for non-Cloudinary URLs
-				if (!url.searchParams.has("fl_attachment")) {
-					url.searchParams.set("fl_attachment", downloadName);
-				}
-				return url.toString();
-			} catch (err) {
-				console.error("Invalid download URL, using raw:", err);
-				return bookPDFURL;
-			}
-		};
-
-		const finalUrl = buildDownloadUrl();
-
-		// Use window.open to avoid browsers ignoring download attr on cross-origin URLs
-		window.open(finalUrl || bookPDFURL, "_blank");
+		const serverDownloadUrl = `${API_BASE_URL}/book/${_id}/download`;
+		window.open(serverDownloadUrl, "_blank");
 	};
 
 	const fetchComments = useCallback(async () => {
