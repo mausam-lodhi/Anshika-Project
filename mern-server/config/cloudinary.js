@@ -13,8 +13,9 @@ const storage = new CloudinaryStorage({
 	cloudinary: cloudinary,
 	params: {
 		folder: "shiksha_kendra_books",
-		resource_type: "auto",
-		allowed_formats: ["jpg", "png", "pdf"],
+		// Use raw so direct downloads (PDF/PPT/etc.) work without auth errors
+		resource_type: "raw",
+		allowed_formats: ["pdf", "ppt", "pptx", "doc", "docx", "txt", "csv", "zip"],
 	},
 });
 
