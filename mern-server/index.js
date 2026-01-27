@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(
 	cors({
-		origin: process.env.CLIENT_URL || "https://anshika-project.onrender.com",
+		origin: process.env.CLIENT_URL, // Frontend URL
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
 	})
